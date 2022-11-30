@@ -59,4 +59,14 @@ public class UserController {
         List<UserVO> userVOList = userService.getUserFollow(userId);
         return ResultUtils.success(userVOList);
     }
+
+    @GetMapping("/user/befollow")
+    public BaseResponse<List<UserVO>> getUserBeFollowed(@RequestParam("userId")Long userId){
+        if(userId == null || userId < 0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+
+        List<UserVO> userVOList = userService.getUserBeFollowed(userId);
+        return ResultUtils.success(userVOList);
+    }
 }

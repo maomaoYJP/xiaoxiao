@@ -20,4 +20,11 @@ public interface UserService extends IService<User> {
      * @return
      */
     List<UserVO> getUserFollow(Long userId);
+
+    /**
+     * 获取用户被谁关注
+     * @param userId
+     * @return
+     */
+    List<UserVO> getUserBeFollowed(Long userId);
 }

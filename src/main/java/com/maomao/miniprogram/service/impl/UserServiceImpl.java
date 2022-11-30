@@ -27,6 +27,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public List<UserVO> getUserFollow(Long userId) {
         return userMapper.getUserFollow(userId);
     }
+
+    @Override
+    public List<UserVO> getUserBeFollowed(Long userId) {
+        return userMapper.getUserBeFollowed(userId);
+    }
 }
 
 
