@@ -9,6 +9,7 @@
             <result property="openid" column="openid" jdbcType="VARCHAR"/>
             <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
             <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+            <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
             <result property="introduce" column="introduce" jdbcType="VARCHAR"/>
             <result property="sex" column="sex" jdbcType="TINYINT"/>
             <result property="email" column="email" jdbcType="VARCHAR"/>
@@ -18,10 +19,32 @@
             <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
     </resultMap>
 
+    <resultMap id="userVOResultMap" type="com.maomao.miniprogram.entity.User">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="nickname" column="nickname" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="clientId" column="client_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
     <sql id="Base_Column_List">
         id,openid,nickname,
         avatar,introduce,sex,
         email,role,create_time,
         update_time,is_delete
     </sql>
+    <select id="getUserFollow" resultType="com.maomao.miniprogram.model.vo.UserVO">
+        SELECT b.id,b.avatar,b.nickname,b.client_id
+        FROM user_follow a
+        LEFT JOIN `user` b
+        ON  a.follow_user_id = b.id
+        WHERE a.user_id = #{userId}
+    </select>
+
+    <select id="getUserBeFollowed" resultType="com.maomao.miniprogram.model.vo.UserVO">
+        SELECT b.id,b.avatar,b.nickname,b.client_id
+        FROM user_follow a
+        LEFT JOIN `user` b
+        ON  a.user_id = b.id
+        WHERE a.follow_user_id = #{userId}
+    </select>
 </mapper>

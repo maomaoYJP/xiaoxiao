@@ -2,6 +2,9 @@ package com.maomao.miniprogram.service;
 
 import com.maomao.miniprogram.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.maomao.miniprogram.model.vo.UserVO;
+
+import java.util.List;
 
 /**
 * @author maomao
@@ -10,4 +13,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface UserService extends IService<User> {
 
+
+    /**
+     * 获取用户的关注
+     * @param userId
+     * @return
+     */
+    List<UserVO> getUserFollow(Long userId);
 }

@@ -18,4 +18,5 @@ public class UserVO implements Serializable {
 
     private String nickname;
 
+    private String clientId;
 }

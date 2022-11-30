@@ -8,10 +8,12 @@ import com.maomao.miniprogram.common.Utils.UserHolder;
 import com.maomao.miniprogram.entity.User;
 import com.maomao.miniprogram.exception.BusinessException;
 import com.maomao.miniprogram.model.dto.UserUpdateRequest;
+import com.maomao.miniprogram.model.vo.UserVO;
 import com.maomao.miniprogram.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -46,5 +48,15 @@ public class UserController {
         boolean b = userService.updateById(user);
 
         return ResultUtils.success(b);
+    }
+
+    @GetMapping("/user/follow")
+    public BaseResponse<List<UserVO>> getUserFollow(@RequestParam("userId")Long userId){
+        if(userId == null || userId < 0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+
+        List<UserVO> userVOList = userService.getUserFollow(userId);
+        return ResultUtils.success(userVOList);
     }
 }

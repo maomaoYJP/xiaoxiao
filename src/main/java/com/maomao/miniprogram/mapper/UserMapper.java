@@ -2,6 +2,9 @@ package com.maomao.miniprogram.mapper;
 
 import com.maomao.miniprogram.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.maomao.miniprogram.model.vo.UserVO;
+
+import java.util.List;
 
 /**
 * @author maomao
@@ -11,6 +14,19 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface UserMapper extends BaseMapper<User> {
 
+    /**
+     * 获取用户关注
+     * @param userId
+     * @return
+     */
+    List<UserVO> getUserFollow(Long userId);
+
+    /**
+     * 获取用户被哪些用户关注
+     * @param userId
+     * @return
+     */
+    List<UserVO> getUserBeFollowed(Long userId);
 }
 
 
