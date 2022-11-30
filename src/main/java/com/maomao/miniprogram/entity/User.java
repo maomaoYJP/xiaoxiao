@@ -61,6 +61,11 @@ public class User implements Serializable {
     private Integer role;
 
     /**
+     * 用户设备码
+     */
+    private String clientId;
+
+    /**
      * 创建时间
      */
     private Date createTime;
