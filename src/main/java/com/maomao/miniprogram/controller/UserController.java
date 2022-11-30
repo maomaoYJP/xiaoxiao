@@ -45,6 +45,8 @@ public class UserController {
         user.setNickname(userUpdateRequest.getNickname());
         user.setAvatar(userUpdateRequest.getAvatar());
         user.setIntroduce(userUpdateRequest.getIntroduce());
+        user.setClientId(userUpdateRequest.getClientId());
+
         boolean b = userService.updateById(user);
 
         return ResultUtils.success(b);
