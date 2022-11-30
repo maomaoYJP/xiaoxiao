@@ -38,6 +38,11 @@ public class CommentVO implements Serializable {
     private String nickname;
 
     /**
+     * 评论用户的设备码
+     */
+    private String clientId;
+
+    /**
      * 评论的所有回复
      */
     private List<CommentVO> replyCommentVOList;

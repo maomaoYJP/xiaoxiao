@@ -74,6 +74,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
             commentVO.setUserId(user.getId());
             commentVO.setAvatar(user.getAvatar());
             commentVO.setNickname(user.getNickname());
+            commentVO.setClientId(user.getClientId());
 
             //封装isThumb
             Long commentId = comment.getId();
@@ -109,6 +110,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
                 replyVO.setUserId(replyUser.getId());
                 replyVO.setAvatar(replyUser.getAvatar());
                 replyVO.setNickname(replyUser.getNickname());
+                replyVO.setClientId(replyUser.getClientId());
 
                 Long replyId = reply.getId();
                 QueryWrapper<CommentThumb> commentThumbWrapper1 = new QueryWrapper<>();
