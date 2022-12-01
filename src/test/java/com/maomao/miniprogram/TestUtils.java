@@ -1,8 +1,11 @@
 package com.maomao.miniprogram;
 
 import com.maomao.miniprogram.common.Utils.HttpUtils;
+import com.maomao.miniprogram.config.MailSendConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import javax.annotation.Resource;
 
 import static com.maomao.miniprogram.constant.WXConstant.WX_APP_ID;
 import static com.maomao.miniprogram.constant.WXConstant.WX_APP_SECRET;
@@ -14,6 +17,9 @@ import static com.maomao.miniprogram.constant.WXConstant.WX_APP_SECRET;
  */
 @SpringBootTest
 public class TestUtils {
+
+    @Resource
+    MailSendConfig mailSendConfig;
 
     @Test
     void getComment(){
@@ -28,6 +34,10 @@ public class TestUtils {
 
     @Test
     void test(){
-
+        mailSendConfig.setTitle("新评论");
+        mailSendConfig.setFrom("毛毛");
+        mailSendConfig.setAddress("2081498716@qq.com");
+        mailSendConfig.setContent("哈哈哈哈");
+        mailSendConfig.start();
     }
 }
