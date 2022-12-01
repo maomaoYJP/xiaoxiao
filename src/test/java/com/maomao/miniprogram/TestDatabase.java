@@ -1,6 +1,7 @@
 package com.maomao.miniprogram;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.maomao.miniprogram.entity.UpdateLog;
 import com.maomao.miniprogram.model.dto.CardQueryRequest;
 import com.maomao.miniprogram.model.dto.TalkCommentQueryRequest;
 import com.maomao.miniprogram.model.dto.TalkSaveDTO;
@@ -9,6 +10,7 @@ import com.maomao.miniprogram.model.vo.IndexCardVO;
 import com.maomao.miniprogram.model.vo.TalkVO;
 import com.maomao.miniprogram.service.CommentService;
 import com.maomao.miniprogram.service.TalkService;
+import com.maomao.miniprogram.service.UpdateLogService;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -26,7 +28,7 @@ public class TestDatabase {
     TalkService talkService;
 
     @Resource
-    CommentService commentService;
+    UpdateLogService updateLogService;
 
     @Test
     void testUser(){
@@ -65,5 +67,11 @@ public class TestDatabase {
         "https://gdufe-campus.oss-cn-guangzhou.aliyuncs.com/2022-11-25/1669305761127dfd6eff7-693b-4af3-9ddc-93af0a6f83a8"};
         talkSaveDTO.setUrls(urls);
         System.out.println(talkService.saveTalkAndPicture(talkSaveDTO));
+    }
+
+    @Test
+    void testUpdateLog(){
+        UpdateLog one = updateLogService.getOne(null);
+        System.out.println(one);
     }
 }
