@@ -263,11 +263,11 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
                         .setSql("comment = comment + 1")
                         .update();
                 //给回复的评论用户发送邮件,除去自己
-                UserVO replyUser = userMapper.getUserByTalkId(replyUserId);
-                if(!replyUser.getId().equals(userId)){
+                User user = userService.getById(replyUserId);
+                if(!user.getId().equals(userId)){
                     mailSendConfig.setTitle("新评论");
                     mailSendConfig.setFrom(UserHolder.getUser().getNickname());
-                    mailSendConfig.setAddress(replyUser.getEmail());
+                    mailSendConfig.setAddress(user.getEmail());
                     mailSendConfig.setContent(content);
                     mailSendConfig.start();
                 }
