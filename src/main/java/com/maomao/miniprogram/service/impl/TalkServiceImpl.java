@@ -216,11 +216,13 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk>
         //发送邮件，给关注我的所有人
         List<UserVO> userBeFollowed = userService.getUserBeFollowed(userId);
         userBeFollowed.forEach(userVO -> {
-            mailSendConfig.setTitle("新说说：" + title);
-            mailSendConfig.setFrom(UserHolder.getUser().getNickname());
-            mailSendConfig.setAddress(userVO.getEmail());
-            mailSendConfig.setContent(content);
-            mailSendConfig.start();
+            if(userVO.getEmail() != null){
+                mailSendConfig.setTitle("新说说：" + title);
+                mailSendConfig.setFrom(UserHolder.getUser().getNickname());
+                mailSendConfig.setAddress(userVO.getEmail());
+                mailSendConfig.setContent(content);
+                mailSendConfig.start();
+            }
         });
 
         //没有图片

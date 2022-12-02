@@ -219,12 +219,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
                         .update();
                 //给当前评论的说说所有者发送邮件,除去自己
                 UserVO talkUser = userMapper.getUserByTalkId(talkId);
-                if(!talkUser.getId().equals(userId)){
-                    mailSendConfig.setTitle("新评论");
-                    mailSendConfig.setFrom(UserHolder.getUser().getNickname());
-                    mailSendConfig.setAddress(talkUser.getEmail());
-                    mailSendConfig.setContent(content);
-                    mailSendConfig.start();
+                if(talkUser.getEmail() != null){
+                    if(!talkUser.getId().equals(userId)){
+                        mailSendConfig.setTitle("新评论");
+                        mailSendConfig.setFrom(UserHolder.getUser().getNickname());
+                        mailSendConfig.setAddress(talkUser.getEmail());
+                        mailSendConfig.setContent(content);
+                        mailSendConfig.start();
+                    }
                 }
                 return id;
             }
@@ -264,12 +266,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
                         .update();
                 //给回复的评论用户发送邮件,除去自己
                 User user = userService.getById(replyUserId);
-                if(!user.getId().equals(userId)){
-                    mailSendConfig.setTitle("新评论");
-                    mailSendConfig.setFrom(UserHolder.getUser().getNickname());
-                    mailSendConfig.setAddress(user.getEmail());
-                    mailSendConfig.setContent(content);
-                    mailSendConfig.start();
+                if(user.getEmail() != null){
+                    if(!user.getId().equals(userId)){
+                        mailSendConfig.setTitle("新评论");
+                        mailSendConfig.setFrom(UserHolder.getUser().getNickname());
+                        mailSendConfig.setAddress(user.getEmail());
+                        mailSendConfig.setContent(content);
+                        mailSendConfig.start();
+                    }
                 }
                 return id;
             }
