@@ -1,6 +1,7 @@
 package com.maomao.miniprogram;
 
 import com.maomao.miniprogram.common.Utils.HttpUtils;
+import com.maomao.miniprogram.common.Utils.MailSendUtil;
 import com.maomao.miniprogram.config.MailSendConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,11 +34,17 @@ public class TestUtils {
     }
 
     @Test
-    void test(){
-        mailSendConfig.setTitle("新评论");
-        mailSendConfig.setFrom("毛毛");
-        mailSendConfig.setAddress("2081498716@qq.com");
-        mailSendConfig.setContent("哈哈哈哈");
-        mailSendConfig.start();
+    void test() throws InterruptedException {
+        MailSendUtil mailSendUtil = new MailSendUtil();
+        mailSendUtil.setRecipient(mailSendConfig.getRecipient());
+        mailSendUtil.setPassword(mailSendConfig.getPassword());
+        mailSendUtil.setTitle("新评论");
+        mailSendUtil.setFrom("毛毛");
+        mailSendUtil.setAddress("2081498716@qq.com");
+        mailSendUtil.setContent("成功");
+        mailSendUtil.start();
+
+        Thread.currentThread().sleep(10000);
+
     }
 }

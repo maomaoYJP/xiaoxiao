@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.maomao.miniprogram.common.ErrorCode;
+import com.maomao.miniprogram.common.Utils.MailSendUtil;
 import com.maomao.miniprogram.common.Utils.UserHolder;
 import com.maomao.miniprogram.config.MailSendConfig;
 import com.maomao.miniprogram.entity.*;
@@ -46,9 +47,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
     @Resource
     TalkService talkService;
     @Resource
-    MailSendConfig mailSendConfig;
-    @Resource
     UserMapper userMapper;
+    @Resource
+    MailSendConfig mailSendConfig;
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
@@ -221,11 +222,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
                 UserVO talkUser = userMapper.getUserByTalkId(talkId);
                 if(talkUser.getEmail() != null){
                     if(!talkUser.getId().equals(userId)){
-                        mailSendConfig.setTitle("新评论");
-                        mailSendConfig.setFrom(UserHolder.getUser().getNickname());
-                        mailSendConfig.setAddress(talkUser.getEmail());
-                        mailSendConfig.setContent(content);
-                        mailSendConfig.start();
+                        MailSendUtil mailSendUtil = new MailSendUtil();
+                        mailSendUtil.setRecipient(mailSendConfig.getRecipient());
+                        mailSendUtil.setPassword(mailSendConfig.getPassword());
+                        mailSendUtil.setTitle("新评论");
+                        mailSendUtil.setFrom(UserHolder.getUser().getNickname());
+                        mailSendUtil.setAddress(talkUser.getEmail());
+                        mailSendUtil.setContent(content);
+                        mailSendUtil.start();
                     }
                 }
                 return id;
@@ -268,11 +272,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
                 User user = userService.getById(replyUserId);
                 if(user.getEmail() != null){
                     if(!user.getId().equals(userId)){
-                        mailSendConfig.setTitle("新评论");
-                        mailSendConfig.setFrom(UserHolder.getUser().getNickname());
-                        mailSendConfig.setAddress(user.getEmail());
-                        mailSendConfig.setContent(content);
-                        mailSendConfig.start();
+                        MailSendUtil mailSendUtil = new MailSendUtil();
+                        mailSendUtil.setRecipient(mailSendConfig.getRecipient());
+                        mailSendUtil.setPassword(mailSendConfig.getPassword());
+                        mailSendUtil.setTitle("新评论");
+                        mailSendUtil.setFrom(UserHolder.getUser().getNickname());
+                        mailSendUtil.setAddress(user.getEmail());
+                        mailSendUtil.setContent(content);
+                        mailSendUtil.start();
                     }
                 }
                 return id;

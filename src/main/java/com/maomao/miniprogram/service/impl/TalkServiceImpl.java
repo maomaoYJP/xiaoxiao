@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.maomao.miniprogram.common.ErrorCode;
+import com.maomao.miniprogram.common.Utils.MailSendUtil;
 import com.maomao.miniprogram.common.Utils.UserHolder;
 import com.maomao.miniprogram.config.MailSendConfig;
 import com.maomao.miniprogram.entity.*;
@@ -217,10 +218,13 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk>
         List<UserVO> userBeFollowed = userService.getUserBeFollowed(userId);
         userBeFollowed.forEach(userVO -> {
             if(userVO.getEmail() != null){
-                mailSendConfig.setTitle("新说说：" + title);
-                mailSendConfig.setFrom(UserHolder.getUser().getNickname());
-                mailSendConfig.setAddress(userVO.getEmail());
-                mailSendConfig.setContent(content);
+                MailSendUtil mailSendUtil = new MailSendUtil();
+                mailSendUtil.setRecipient(mailSendConfig.getRecipient());
+                mailSendUtil.setPassword(mailSendConfig.getPassword());
+                mailSendUtil.setTitle("新说说：" + title);
+                mailSendUtil.setFrom(UserHolder.getUser().getNickname());
+                mailSendUtil.setAddress(userVO.getEmail());
+                mailSendUtil.setContent(content);
                 mailSendConfig.start();
             }
         });
