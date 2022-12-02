@@ -27,6 +27,13 @@ public interface UserMapper extends BaseMapper<User> {
      * @return
      */
     List<UserVO> getUserBeFollowed(Long userId);
+
+    /**
+     * 根据talkId获取talk用户
+     * @param talkId
+     * @return
+     */
+    UserVO getUserByTalkId(Long talkId);
 }
 
 

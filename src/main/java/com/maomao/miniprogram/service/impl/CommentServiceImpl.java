@@ -4,8 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.maomao.miniprogram.common.ErrorCode;
+import com.maomao.miniprogram.common.Utils.UserHolder;
+import com.maomao.miniprogram.config.MailSendConfig;
 import com.maomao.miniprogram.entity.*;
 import com.maomao.miniprogram.exception.BusinessException;
+import com.maomao.miniprogram.mapper.UserMapper;
 import com.maomao.miniprogram.model.dto.TalkCommentDeleteRequest;
 import com.maomao.miniprogram.model.dto.TalkCommentQueryRequest;
 import com.maomao.miniprogram.model.dto.TalkCommentSaveRequest;
@@ -42,6 +45,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
     TalkReplyService talkReplyService;
     @Resource
     TalkService talkService;
+    @Resource
+    MailSendConfig mailSendConfig;
+    @Resource
+    UserMapper userMapper;
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
@@ -210,6 +217,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
                         .eq("id", talkId)
                         .setSql("comment = comment + 1")
                         .update();
+                //给当前评论的说说所有者发送邮件,除去自己
+                UserVO talkUser = userMapper.getUserByTalkId(talkId);
+                if(!talkUser.getId().equals(userId)){
+                    mailSendConfig.setTitle("新评论");
+                    mailSendConfig.setFrom(UserHolder.getUser().getNickname());
+                    mailSendConfig.setAddress(talkUser.getEmail());
+                    mailSendConfig.setContent(content);
+                    mailSendConfig.start();
+                }
                 return id;
             }
         }else{
@@ -224,6 +240,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
         Long rootCommentId = talkReplySaveRequest.getRootCommentId();
         Long parentId = talkReplySaveRequest.getParentId();
         Long talkId = talkReplySaveRequest.getTalkId();
+        Long replyUserId = talkReplySaveRequest.getReplyUserId();
 
         //构建comment，保存
         Comment comment = new Comment();
@@ -245,6 +262,15 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment>
                         .eq("id", talkId)
                         .setSql("comment = comment + 1")
                         .update();
+                //给回复的评论用户发送邮件,除去自己
+                UserVO replyUser = userMapper.getUserByTalkId(replyUserId);
+                if(!replyUser.getId().equals(userId)){
+                    mailSendConfig.setTitle("新评论");
+                    mailSendConfig.setFrom(UserHolder.getUser().getNickname());
+                    mailSendConfig.setAddress(replyUser.getEmail());
+                    mailSendConfig.setContent(content);
+                    mailSendConfig.start();
+                }
                 return id;
             }
 

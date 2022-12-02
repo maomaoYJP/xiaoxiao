@@ -20,4 +20,6 @@ public class TalkReplySaveRequest implements Serializable {
 
     private Long talkId;
 
+    private Long replyUserId;
+
 }
