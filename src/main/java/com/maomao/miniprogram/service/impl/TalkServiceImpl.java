@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.maomao.miniprogram.common.ErrorCode;
 import com.maomao.miniprogram.common.Utils.UserHolder;
+import com.maomao.miniprogram.config.MailSendConfig;
 import com.maomao.miniprogram.entity.*;
 import com.maomao.miniprogram.exception.BusinessException;
 import com.maomao.miniprogram.model.dto.CardQueryRequest;
@@ -42,6 +43,8 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk>
     PictureService pictureService;
     @Resource
     TalkCommentService talkCommentService;
+    @Resource
+    MailSendConfig mailSendConfig;
 
     @Override
     @Transactional(rollbackFor = RuntimeException.class)
@@ -208,6 +211,17 @@ public class TalkServiceImpl extends ServiceImpl<TalkMapper, Talk>
         String title = talkSaveDTO.getTitle();
         String content = talkSaveDTO.getContent();
         String[] urls = talkSaveDTO.getUrls();
+        Long userId = UserHolder.getUser().getId();
+
+        //发送邮件，给关注我的所有人
+        List<UserVO> userBeFollowed = userService.getUserBeFollowed(userId);
+        userBeFollowed.forEach(userVO -> {
+            mailSendConfig.setTitle("新说说：" + title);
+            mailSendConfig.setFrom(UserHolder.getUser().getNickname());
+            mailSendConfig.setAddress(userVO.getEmail());
+            mailSendConfig.setContent(content);
+            mailSendConfig.start();
+        });
 
         //没有图片
         if(urls == null || urls.length == 0){
