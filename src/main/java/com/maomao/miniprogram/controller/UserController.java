@@ -46,6 +46,7 @@ public class UserController {
         user.setAvatar(userUpdateRequest.getAvatar());
         user.setIntroduce(userUpdateRequest.getIntroduce());
         user.setClientId(userUpdateRequest.getClientId());
+        user.setEmail(userUpdateRequest.getEmail());
 
         boolean b = userService.updateById(user);
 

@@ -19,4 +19,6 @@ public class UserUpdateRequest implements Serializable {
     private String introduce;
 
     private String clientId;
+
+    private String email;
 }
